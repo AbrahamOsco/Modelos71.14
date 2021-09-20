@@ -44,7 +44,7 @@ def agregarDiccionario(id,diccionario,clave,valor,):
 #Creamos para resolver el modelo un diccionario con las prendas que sean compatibles entren si. 
 #La idea es juntar la mayor cantidad prendas en un solo lavado. Asi se dismuye el tiempo 
 def resolverModelo():
-	
+	.	
 
 
 
