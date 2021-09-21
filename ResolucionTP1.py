@@ -154,9 +154,12 @@ def escribirArchivo(listaTerminanda,dicTiempos):
 		lavados+=1
 		for prenda in lista:
 			if(prenda not in prendaUsada):
-				archivo.write(str(lavados)+ ' '+str(prenda)+'\n')
-				prendaUsada.append(prenda)
-				
+				if(lavados<16):
+					archivo.write(str(prenda) + ' ' + str(lavados) +'\n')
+					prendaUsada.append(prenda)
+				else:
+					archivo.write(str(prenda) + ' ' +str(lavados))
+
 	archivo.close()	
 
 
