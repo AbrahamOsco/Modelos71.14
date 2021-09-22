@@ -133,10 +133,11 @@ def refinamientoLista(listaSinRefinar,dicTiempos):
 	#En primer lugar hay que eliminar elementos repetidos:
 	listasNueva = []
 	listaSinRepetidas = []
+	listaAux = []
 	obtenerListasSinRepetidas(listaSinRepetidas,listaSinRefinar)
 	
 
-	listasSegunTiempo = ordenarListasSegunTiempo(listaSinRepetidas)
+	listasSegunTiempo = ordenarListasSegunTiempo(listaSinRepetidas,listaAux)
 
 
 	numerosUsados = []
@@ -153,14 +154,12 @@ def refinamientoLista(listaSinRefinar,dicTiempos):
 			listaNuevaRe.append(lista)
 			restearNumerosUsados(numerosUsados,listaNuevaRe)
 	
-	
-	
-	for lista in listasSegunTiempo:
-		for prenda in lista:
-			if(lista not in listaNuevaRe):
-				listaNuevaRe.append(lista)
-	
-	return listaNuevaRe	
+	print("coincidencias")
+	print(listaNuevaRe)
+
+	listaFinal = ordenarListasSegunTiempo(listaSinRepetidas,listaNuevaRe)
+	print(listaFinal)
+	return listaFinal	
 
 def restearNumerosUsados(numerosUsados,listaNuevaRe):
 	listaVacia = [ ]
@@ -171,15 +170,16 @@ def restearNumerosUsados(numerosUsados,listaNuevaRe):
 	listaNuevaRe = listaVacia
 
 
-def ordenarListasSegunTiempo(listaSinRepetidas):
+def ordenarListasSegunTiempo(listaSinRepetidas,listaInicial):
 	tamanioMax = 0
 	listaTiemposMax=[]	
 	tamanioMax = obtengoTamanioMaxLista(tamanioMax,listaSinRepetidas,listaTiemposMax)
 	minTiempo = min(listaTiemposMax)
-	listasNuevaTiempo= []
+	listasNuevaTiempo= listaInicial
+
 	
 	for lista in listaSinRepetidas:
-		if( obtenerTiempo(dicTiempos,lista) == minTiempo and len(lista)==tamanioMax):
+		if( obtenerTiempo(dicTiempos,lista) == minTiempo and len(lista)==tamanioMax and lista not in listaInicial):
 			listasNuevaTiempo.append(lista)
 	
 
