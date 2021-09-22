@@ -126,8 +126,9 @@ def lavadosCompatiblePorPrenda(prendaEspecifica,dicLavados):
 
 	return listaAux			
 
-#Funcion que elimina los repetidos y luego reordena el nuevo arreglo desde el conjunto de prendas de menor
-#tiempo al de mayor tiempo
+#Funcion que elimina los repetidos y luego reordena las listas desde el conjunto de prendas de menor
+#tiempo al de mayor tiempo para luego tomar las listas con elementos sin repetir y finalmente reordenando
+#por tiempo nuevamente.
 def refinamientoLista(listaSinRefinar,dicTiempos):
 
 	#En primer lugar hay que eliminar elementos repetidos:
@@ -150,55 +151,52 @@ def refinamientoLista(listaSinRefinar,dicTiempos):
 			if(prenda not in numerosUsados ):
 				numerosUsados.append(prenda)
 				contador +=1
-		if(contador==len(lista) or contador==len(lista)-1 ):
+		if(contador==len(lista)):
 			listaNuevaRe.append(lista)
-			restearNumerosUsados(numerosUsados,listaNuevaRe)
-	
-	print("coincidencias")
-	print(listaNuevaRe)
+		numerosUsados = resetearLista(numerosUsados,listaNuevaRe)
 
-	listaFinal = ordenarListasSegunTiempo(listaSinRepetidas,listaNuevaRe)
-	print(listaFinal)
+
+	listaFinal = ordenarListasSegunTiempo(listasSegunTiempo,listaNuevaRe)
+
 	return listaFinal	
 
-def restearNumerosUsados(numerosUsados,listaNuevaRe):
-	listaVacia = [ ]
-	for lista in listaNuevaRe:
-		for prenda in lista:
-			listaVacia.append(prenda)
+#Devuelve la lista con solo los numeros en la nueva lista, en la primera pasada devuelve la lista vacia
+def resetearLista(numerosUsados,listaNuevaRe):
+	numerosUsados= []
+	if(len(listaNuevaRe)>0):
+		for lista in listaNuevaRe:
+			for prenda in lista:
+				numerosUsados.append(prenda)
+	return numerosUsados
 
-	listaNuevaRe = listaVacia
-
-
+#Recibe la lista de listas completa y la lista inicial para empezar a llenar en la nueva lista con
+#los elementos que antes se encontraban ahi
 def ordenarListasSegunTiempo(listaSinRepetidas,listaInicial):
 	tamanioMax = 0
 	listaTiemposMax=[]	
 	tamanioMax = obtengoTamanioMaxLista(tamanioMax,listaSinRepetidas,listaTiemposMax)
 	minTiempo = min(listaTiemposMax)
+	maxtiempo = max(listaTiemposMax)
 	listasNuevaTiempo= listaInicial
 
-	
+
 	for lista in listaSinRepetidas:
-		if( obtenerTiempo(dicTiempos,lista) == minTiempo and len(lista)==tamanioMax and lista not in listaInicial):
+		if( obtenerTiempo(dicTiempos,lista) == minTiempo and len(lista)==tamanioMax and lista not in listasNuevaTiempo):
 			listasNuevaTiempo.append(lista)
-	
 
 	for i in range(0,tamanioMax):
 		for lista in listaSinRepetidas:
-			if(lista not in listasNuevaTiempo and (len(lista) ==tamanioMax-i)):
+			if( obtenerTiempo(dicTiempos,lista) == minTiempo and  (lista not in listasNuevaTiempo) and (len(lista) ==tamanioMax-i)):
 				listasNuevaTiempo.append(lista)
-
+			elif( obtenerTiempo(dicTiempos,lista) == minTiempo+1  and (lista not in listasNuevaTiempo) and (len(lista) ==tamanioMax-i) ):
+				listasNuevaTiempo.append(lista)
+			elif( obtenerTiempo(dicTiempos,lista) == minTiempo+2  and (lista not in listasNuevaTiempo) and (len(lista) ==tamanioMax-i) ):
+				listasNuevaTiempo.append(lista)
 	return listasNuevaTiempo
 
 
-def encontrarNumerosEnLista(listaEntrante,ListaDeNumeroUsados):
-	esta = False 
-	for prenda in listaEntrante:
-		if(prenda in ListaDeNumeroUsados):
-			esta = True 
-	return esta
 
-
+#
 def obtengoTamanioMaxLista(tamanioMax,listaSinRepetidas,listaTiemposMax):
 	for lista in listaSinRepetidas:
 		listaTiemposMax.append(obtenerTiempo(dicTiempos,lista))
@@ -206,7 +204,9 @@ def obtengoTamanioMaxLista(tamanioMax,listaSinRepetidas,listaTiemposMax):
 			tamanioMax = len(lista)
 	return tamanioMax	
 
-#obtenemos las lista de listas sin repetir
+#Dada una lista vacia recibida por parametros y una lista con listas repetidas
+#vamos primero a ordenar todas las listas y luego agregamos a la lista vacia las listas 
+#que no se repiten
 def obtenerListasSinRepetidas(listaSinRepetidas,listaSinRefinar):
 	listasNueva = []
 	for lista in listaSinRefinar:
@@ -230,7 +230,6 @@ def obtenerTiempo(dicTiempos,lista):
 #Funcion donde se escribe el archivo
 def escribirArchivo(listaTerminanda):
 
-
 	lavados = 0
 	archivo = open("respuesta.txt",'w')
 	prendaUsada = []
@@ -253,9 +252,10 @@ def escribirArchivo(listaTerminanda):
 	archivo.close()	
 
 
-
 dicIncompatible,dicTiempos = leerArchivos()
 dicCompatible = obtenerLavadosCompatibles(dicIncompatible)
 escribirLista = escribirListaFinal(dicCompatible)
 listaRefinada = refinamientoLista(escribirLista,dicTiempos)
 escribirArchivo(listaRefinada)
+
+
