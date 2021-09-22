@@ -136,34 +136,50 @@ def refinamientoLista(listaSinRefinar,dicTiempos):
 	obtenerListasSinRepetidas(listaSinRepetidas,listaSinRefinar)
 	
 
+	listasSegunTiempo = ordenarListasSegunTiempo(listaSinRepetidas)
+
+
 	numerosUsados = []
 	contador = 0
 	listaNuevaRe=[]
+
+	for lista in listasSegunTiempo:
+		contador = 0
+		for prenda in lista:
+			if(prenda not in numerosUsados ):
+				numerosUsados.append(prenda)
+				contador +=1
+		if(contador==len(lista) or contador==len(lista)-1 ):
+			listaNuevaRe.append(lista)
+			restearNumerosUsados(numerosUsados,listaNuevaRe)
 	
-	for i in range(0,3): 
-		for lista in listaSinRepetidas:
-			contador = 0
-			for prenda in lista:
-				if(prenda not in numerosUsados):
-					numerosUsados.append(prenda)
-					contador +=1
-			if(contador==len(lista)-i):
-				listaNuevaRe.append(lista)		
+	
+	
+	for lista in listasSegunTiempo:
+		for prenda in lista:
+			if(lista not in listaNuevaRe):
+				listaNuevaRe.append(lista)
+	
+	return listaNuevaRe	
 
-	listaNuevaReSinRepetidas = []
-	obtenerListasSinRepetidas(listaNuevaReSinRepetidas,listaNuevaRe)
+def restearNumerosUsados(numerosUsados,listaNuevaRe):
+	listaVacia = [ ]
+	for lista in listaNuevaRe:
+		for prenda in lista:
+			listaVacia.append(prenda)
 
-	listaTiemposMax=[]			
+	listaNuevaRe = listaVacia
+
+
+def ordenarListasSegunTiempo(listaSinRepetidas):
 	tamanioMax = 0
+	listaTiemposMax=[]	
 	tamanioMax = obtengoTamanioMaxLista(tamanioMax,listaSinRepetidas,listaTiemposMax)
 	minTiempo = min(listaTiemposMax)
-	maxTiempo = max(listaTiemposMax)
-	diferencia = maxTiempo-minTiempo
-	
-	listasNuevaTiempo=listaNuevaReSinRepetidas
+	listasNuevaTiempo= []
 	
 	for lista in listaSinRepetidas:
-		if( obtenerTiempo(dicTiempos,lista) == minTiempo and len(lista)==tamanioMax and  lista not in listasNuevaTiempo):
+		if( obtenerTiempo(dicTiempos,lista) == minTiempo and len(lista)==tamanioMax):
 			listasNuevaTiempo.append(lista)
 	
 
@@ -171,9 +187,8 @@ def refinamientoLista(listaSinRefinar,dicTiempos):
 		for lista in listaSinRepetidas:
 			if(lista not in listasNuevaTiempo and (len(lista) ==tamanioMax-i)):
 				listasNuevaTiempo.append(lista)
-	
-	print(listasNuevaTiempo)
-	return listasNuevaTiempo	
+
+	return listasNuevaTiempo
 
 
 def encontrarNumerosEnLista(listaEntrante,ListaDeNumeroUsados):
