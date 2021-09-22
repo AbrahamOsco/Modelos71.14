@@ -126,29 +126,78 @@ def lavadosCompatiblePorPrenda(prendaEspecifica,dicLavados):
 
 	return listaAux			
 
+
 def refinamientoLista(listaSinRefinar,dicTiempos):
-	print("hola")
+	tiempoGene = 0
+	listaTiemposMax = []
+	listaRefinada = []
+	i = 0
+	tamanioMax = len(listaSinRefinar[0])
+	for lista in listaSinRefinar:
+		listaTiemposMax.append(obtenerTiempo(dicTiempos,lista))
+		if(len(lista)>tamanioMax):
+			tamanioMax = len(lista)
+		i+=1
+	minTiempo = min(listaTiemposMax)
+	maxTiempo = max(listaTiemposMax)
+	diferencia = maxTiempo-minTiempo
+	print(tamanioMax)
 
 
+	for i in range(minTiempo,maxTiempo+1):
+		for lista in listaSinRefinar:
+			if( obtenerTiempo(dicTiempos,lista) == minTiempo):
+				if(len(lista)==tamanioMax):
+					listaRefinada.append(lista)
+				elif(len(lista)==tamanioMax-1):
+					listaRefinada.append(lista)
+		minTiempo+=1
+
+
+	
+
+
+	#print(diferencia)
+	#print(minTiempo)
+	#print(maxTiempo)
+	#print(listaTiemposMax)
+	#print(listaSinRefinar)
+	#print(listaRefinada)
+	return listaRefinada
+	
+
+
+def obtenerTiempo(dicTiempos,lista):
+	listaAux = []
+	for prenda in lista:
+		listaAux.append(dicTiempos.get(prenda))
+
+	valorMax = max(listaAux)
+	return valorMax
+
+#Funcion donde se escribe el archivo
 def escribirArchivo(listaTerminanda):
 
 
-	print(listaTerminanda)
 	lavados = 0
 	termino = False
 	archivo = open("respuesta.txt",'w')
 	prendaUsada = []
-
+	listaTerminanda.pop(10)
+	print(listaTerminanda)
 
 	for lista in listaTerminanda:
 		lavados+=1
 		for prenda in lista:
 			if(prenda not in prendaUsada):
-				if(lavados<16):
+				if(lavados<20):
 					archivo.write(str(prenda) + ' ' + str(lavados) +'\n')
 					prendaUsada.append(prenda)
 				else:
 					archivo.write(str(prenda) + ' ' +str(lavados))
+
+
+				
 
 	archivo.close()	
 
@@ -157,5 +206,5 @@ def escribirArchivo(listaTerminanda):
 dicIncompatible,dicTiempos = leerArchivos()
 dicCompatible = obtenerLavadosCompatibles(dicIncompatible)
 escribirLista = escribirListaFinal(dicCompatible)
-refinamientoLista(escribirLista,dicTiempos)
+listaRefinada = refinamientoLista(escribirLista,dicTiempos)
 escribirArchivo(escribirLista)
