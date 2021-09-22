@@ -128,45 +128,50 @@ def lavadosCompatiblePorPrenda(prendaEspecifica,dicLavados):
 
 
 def refinamientoLista(listaSinRefinar,dicTiempos):
-	tiempoGene = 0
-	listaTiemposMax = []
-	listaRefinada = []
-	i = 0
-	tamanioMax = len(listaSinRefinar[0])
+
+	#En primer lugar hay que eliminar elementos repetidos:
+	listasNueva = []
+	listaSinRepetidas = []
+
 	for lista in listaSinRefinar:
-		listaTiemposMax.append(obtenerTiempo(dicTiempos,lista))
-		if(len(lista)>tamanioMax):
-			tamanioMax = len(lista)
-		i+=1
-	minTiempo = min(listaTiemposMax)
-	maxTiempo = max(listaTiemposMax)
-	diferencia = maxTiempo-minTiempo
-	print(tamanioMax)
-
-
-	for i in range(minTiempo,maxTiempo+1):
-		for lista in listaSinRefinar:
-			if( obtenerTiempo(dicTiempos,lista) == minTiempo):
-				if(len(lista)==tamanioMax):
-					listaRefinada.append(lista)
-				elif(len(lista)==tamanioMax-1):
-					listaRefinada.append(lista)
-		minTiempo+=1
-
-
+		listaAux = sorted(lista)
+		listasNueva.append(listaAux)
+	
+	for lista in listasNueva:
+		if (lista not in listaSinRepetidas):
+			listaSinRepetidas.append(lista)
 	
 
 
-	#print(diferencia)
-	#print(minTiempo)
-	#print(maxTiempo)
-	#print(listaTiemposMax)
-	#print(listaSinRefinar)
-	#print(listaRefinada)
-	return listaRefinada
+	print("lista sin repetidos")
+	print(listaSinRepetidas)
 	
+	#i = 0
+	#listaTiemposMax=[]			
+	#tamanioMax = len(listaSinRepetidos[0])
+	#for lista in listaSinRepetidos:
+	#	listaTiemposMax.append(obtenerTiempo(dicTiempos,lista))
+	#	if(len(lista)>tamanioMax):
+	#		tamanioMax = len(lista)
+	#	i+=1
+	#minTiempo = min(listaTiemposMax)
+	#maxTiempo = max(listaTiemposMax)
+	#diferencia = maxTiempo-minTiempo
+	
+	#listasNuevaTiempo=[]
+
+	#for lista in listaSinRepetidos:
+	#	if( obtenerTiempo(dicTiempos,lista) == minTiempo and len(lista)==tamanioMax):
+			#listasNuevaTiempo.append(lista)
+	#for lista in listaSinRepetidos:
+	#	if(lista not in listasNuevaTiempo):
+	#		listasNuevaTiempo.append(lista)
 
 
+	return listaSinRefinar
+
+
+	
 def obtenerTiempo(dicTiempos,lista):
 	listaAux = []
 	for prenda in lista:
@@ -183,7 +188,6 @@ def escribirArchivo(listaTerminanda):
 	termino = False
 	archivo = open("respuesta.txt",'w')
 	prendaUsada = []
-	listaTerminanda.pop(10)
 	print(listaTerminanda)
 
 	for lista in listaTerminanda:
@@ -207,4 +211,4 @@ dicIncompatible,dicTiempos = leerArchivos()
 dicCompatible = obtenerLavadosCompatibles(dicIncompatible)
 escribirLista = escribirListaFinal(dicCompatible)
 listaRefinada = refinamientoLista(escribirLista,dicTiempos)
-escribirArchivo(escribirLista)
+escribirArchivo(listaRefinada)
