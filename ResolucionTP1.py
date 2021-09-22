@@ -148,11 +148,11 @@ def refinamientoLista(listaSinRefinar,dicTiempos):
 	for lista in listaSinRepetidas:
 		if( obtenerTiempo(dicTiempos,lista) == minTiempo and len(lista)==tamanioMax):
 			listasNuevaTiempo.append(lista)
-	for i in range(0,diferencia+1):
+	for i in range(0,tamanioMax):
 		for lista in listaSinRepetidas:
-			if(lista not in listasNuevaTiempo and (obtenerTiempo(dicTiempos,lista)==minTiempo+i)):
+			if(lista not in listasNuevaTiempo and (len(lista) ==tamanioMax-i)):
 				listasNuevaTiempo.append(lista)
-
+	print(listasNuevaTiempo)
 	return listasNuevaTiempo			
 
 
@@ -192,11 +192,16 @@ def escribirArchivo(listaTerminanda):
 	archivo = open("respuesta.txt",'w')
 	prendaUsada = []
 	print(listaTerminanda)
-	
+	entro = False
+	prendaAgregada = 0
 	for lista in listaTerminanda:
 		lavados+=1
+		if(prendaAgregada==0 and len(prendaUsada)>1 ):
+			lavados -=1	
+		prendaAgregada=0
 		for prenda in lista:
 			if(prenda not in prendaUsada):
+				prendaAgregada+=1
 				if(len(prendaUsada)<19):
 					archivo.write(str(prenda) + ' ' + str(lavados) +'\n')
 					prendaUsada.append(prenda)
