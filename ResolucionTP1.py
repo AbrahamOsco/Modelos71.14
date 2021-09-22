@@ -135,25 +135,53 @@ def refinamientoLista(listaSinRefinar,dicTiempos):
 	listaSinRepetidas = []
 	obtenerListasSinRepetidas(listaSinRepetidas,listaSinRefinar)
 	
+
+	numerosUsados = []
+	contador = 0
+	listaNuevaRe=[]
+	
+	for i in range(0,3): 
+		for lista in listaSinRepetidas:
+			contador = 0
+			for prenda in lista:
+				if(prenda not in numerosUsados):
+					numerosUsados.append(prenda)
+					contador +=1
+			if(contador==len(lista)-i):
+				listaNuevaRe.append(lista)		
+
+	listaNuevaReSinRepetidas = []
+	obtenerListasSinRepetidas(listaNuevaReSinRepetidas,listaNuevaRe)
+
 	listaTiemposMax=[]			
 	tamanioMax = 0
 	tamanioMax = obtengoTamanioMaxLista(tamanioMax,listaSinRepetidas,listaTiemposMax)
 	minTiempo = min(listaTiemposMax)
 	maxTiempo = max(listaTiemposMax)
 	diferencia = maxTiempo-minTiempo
-	listaDuplicadosGrande = []
 	
-	listasNuevaTiempo=[]
+	listasNuevaTiempo=listaNuevaReSinRepetidas
 	
 	for lista in listaSinRepetidas:
-		if( obtenerTiempo(dicTiempos,lista) == minTiempo and len(lista)==tamanioMax):
+		if( obtenerTiempo(dicTiempos,lista) == minTiempo and len(lista)==tamanioMax and  lista not in listasNuevaTiempo):
 			listasNuevaTiempo.append(lista)
+	
+
 	for i in range(0,tamanioMax):
 		for lista in listaSinRepetidas:
 			if(lista not in listasNuevaTiempo and (len(lista) ==tamanioMax-i)):
 				listasNuevaTiempo.append(lista)
+	
 	print(listasNuevaTiempo)
-	return listasNuevaTiempo			
+	return listasNuevaTiempo	
+
+
+def encontrarNumerosEnLista(listaEntrante,ListaDeNumeroUsados):
+	esta = False 
+	for prenda in listaEntrante:
+		if(prenda in ListaDeNumeroUsados):
+			esta = True 
+	return esta
 
 
 def obtengoTamanioMaxLista(tamanioMax,listaSinRepetidas,listaTiemposMax):
