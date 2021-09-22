@@ -132,7 +132,6 @@ def refinamientoLista(listaSinRefinar,dicTiempos):
 	#En primer lugar hay que eliminar elementos repetidos:
 	listasNueva = []
 	listaSinRepetidas = []
-
 	for lista in listaSinRefinar:
 		listaAux = sorted(lista)
 		listasNueva.append(listaAux)
@@ -140,35 +139,31 @@ def refinamientoLista(listaSinRefinar,dicTiempos):
 	for lista in listasNueva:
 		if (lista not in listaSinRepetidas):
 			listaSinRepetidas.append(lista)
-	
-
-
-	print("lista sin repetidos")
+	print("Lista con refinada con todas las prendas compatibles entre si ")
 	print(listaSinRepetidas)
+	i = 0
+	listaTiemposMax=[]			
+	tamanioMax = len(listaSinRepetidas[0])
+	for lista in listaSinRepetidas:
+		listaTiemposMax.append(obtenerTiempo(dicTiempos,lista))
+		if(len(lista)>tamanioMax):
+			tamanioMax = len(lista)
+	i+=1
+	minTiempo = min(listaTiemposMax)
+	maxTiempo = max(listaTiemposMax)
+	diferencia = maxTiempo-minTiempo
 	
-	#i = 0
-	#listaTiemposMax=[]			
-	#tamanioMax = len(listaSinRepetidos[0])
-	#for lista in listaSinRepetidos:
-	#	listaTiemposMax.append(obtenerTiempo(dicTiempos,lista))
-	#	if(len(lista)>tamanioMax):
-	#		tamanioMax = len(lista)
-	#	i+=1
-	#minTiempo = min(listaTiemposMax)
-	#maxTiempo = max(listaTiemposMax)
-	#diferencia = maxTiempo-minTiempo
-	
-	#listasNuevaTiempo=[]
+	listasNuevaTiempo=[]
 
-	#for lista in listaSinRepetidos:
-	#	if( obtenerTiempo(dicTiempos,lista) == minTiempo and len(lista)==tamanioMax):
-			#listasNuevaTiempo.append(lista)
-	#for lista in listaSinRepetidos:
-	#	if(lista not in listasNuevaTiempo):
-	#		listasNuevaTiempo.append(lista)
+	for lista in listaSinRepetidas:
+		if( obtenerTiempo(dicTiempos,lista) == minTiempo and len(lista)==tamanioMax):
+			listasNuevaTiempo.append(lista)
+	for lista in listaSinRepetidas:
+		if(lista not in listasNuevaTiempo):
+			listasNuevaTiempo.append(lista)
 
-
-	return listaSinRefinar
+	print(listasNuevaTiempo)
+	return listasNuevaTiempo
 
 
 	
@@ -185,24 +180,23 @@ def escribirArchivo(listaTerminanda):
 
 
 	lavados = 0
-	termino = False
 	archivo = open("respuesta.txt",'w')
 	prendaUsada = []
-	print(listaTerminanda)
-
+	#print(listaTerminanda)
+	
 	for lista in listaTerminanda:
 		lavados+=1
+		intento = 0
 		for prenda in lista:
+			intento=intento+1
 			if(prenda not in prendaUsada):
-				if(lavados<20):
+				if(lavados<15):
 					archivo.write(str(prenda) + ' ' + str(lavados) +'\n')
 					prendaUsada.append(prenda)
-				else:
-					archivo.write(str(prenda) + ' ' +str(lavados))
-
-
-				
-
+				elif(lavados>14):
+					print("hola")
+					archivo.write(str(prenda) + ' ' +str(lavados-1))
+			
 	archivo.close()	
 
 
