@@ -126,12 +126,45 @@ def lavadosCompatiblePorPrenda(prendaEspecifica,dicLavados):
 
 	return listaAux			
 
-
+#Funcion que elimina los repetidos y luego reordena el nuevo arreglo desde el conjunto de prendas de menor
+#timepo al de mayor tiempo
 def refinamientoLista(listaSinRefinar,dicTiempos):
 
 	#En primer lugar hay que eliminar elementos repetidos:
 	listasNueva = []
 	listaSinRepetidas = []
+	obtenerListasSinRepetidas(listasNueva,listaSinRepetidas,listaSinRefinar)
+	listaTiemposMax=[]			
+	tamanioMax = 0
+	tamanioMax = obtengoTamanioMaxLista(tamanioMax,listaSinRepetidas,listaTiemposMax)
+	minTiempo = min(listaTiemposMax)
+	maxTiempo = max(listaTiemposMax)
+	diferencia = maxTiempo-minTiempo
+
+	
+	listasNuevaTiempo=[]
+	
+	for lista in listaSinRepetidas:
+		if( obtenerTiempo(dicTiempos,lista) == minTiempo and len(lista)==tamanioMax):
+			listasNuevaTiempo.append(lista)
+
+	for lista in listaSinRepetidas:
+			if(lista not in listasNuevaTiempo):
+				listasNuevaTiempo.append(lista)
+
+	return listasNuevaTiempo
+
+
+#devuelve el tamanio maximo de las lista en la listaSinRepetidas
+def obtengoTamanioMaxLista(tamanioMax,listaSinRepetidas,listaTiemposMax):
+	for lista in listaSinRepetidas:
+		listaTiemposMax.append(obtenerTiempo(dicTiempos,lista))
+		if(len(lista)>tamanioMax):
+			tamanioMax = len(lista)
+	return tamanioMax	
+
+#obtenemos las lista de listas sin repetir
+def obtenerListasSinRepetidas(listasNueva,listaSinRepetidas,listaSinRefinar):
 	for lista in listaSinRefinar:
 		listaAux = sorted(lista)
 		listasNueva.append(listaAux)
@@ -139,34 +172,8 @@ def refinamientoLista(listaSinRefinar,dicTiempos):
 	for lista in listasNueva:
 		if (lista not in listaSinRepetidas):
 			listaSinRepetidas.append(lista)
-	print("Lista con refinada con todas las prendas compatibles entre si ")
-	print(listaSinRepetidas)
-	i = 0
-	listaTiemposMax=[]			
-	tamanioMax = len(listaSinRepetidas[0])
-	for lista in listaSinRepetidas:
-		listaTiemposMax.append(obtenerTiempo(dicTiempos,lista))
-		if(len(lista)>tamanioMax):
-			tamanioMax = len(lista)
-	i+=1
-	minTiempo = min(listaTiemposMax)
-	maxTiempo = max(listaTiemposMax)
-	diferencia = maxTiempo-minTiempo
-	
-	listasNuevaTiempo=[]
 
-	for lista in listaSinRepetidas:
-		if( obtenerTiempo(dicTiempos,lista) == minTiempo and len(lista)==tamanioMax):
-			listasNuevaTiempo.append(lista)
-	for lista in listaSinRepetidas:
-		if(lista not in listasNuevaTiempo):
-			listasNuevaTiempo.append(lista)
-
-	print(listasNuevaTiempo)
-	return listasNuevaTiempo
-
-
-	
+#Dada una lista de prenda compatibles se obtendra el tiempo maximo que demoraria en lavarla 	
 def obtenerTiempo(dicTiempos,lista):
 	listaAux = []
 	for prenda in lista:
@@ -186,17 +193,13 @@ def escribirArchivo(listaTerminanda):
 	
 	for lista in listaTerminanda:
 		lavados+=1
-		intento = 0
 		for prenda in lista:
-			intento=intento+1
 			if(prenda not in prendaUsada):
 				if(lavados<15):
 					archivo.write(str(prenda) + ' ' + str(lavados) +'\n')
 					prendaUsada.append(prenda)
 				elif(lavados>14):
-					print("hola")
 					archivo.write(str(prenda) + ' ' +str(lavados-1))
-			
 	archivo.close()	
 
 
