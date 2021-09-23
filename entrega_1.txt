@@ -1,0 +1,14 @@
+->impresion inicial del problem
+En primer lugar no entendi en inicio a que iva el tp luego de leer un poco mi cuenta de su complejidad
+y me parecio bastante complejo de como encararlo.
+->Las ideas de como resolver me surgio hacerlo en python y luego en primer lugar como tengo la incompatibilidad 
+en cada prenda me parecio mejor obtener el complemento (las prendas compatibles) para luego ir recorriendo cada lista
+obtener el valor del tiempo de lavado e ir agregando de menor tiempo (y mas compatible)  al de  mayor tiempo.
+->Comentarios sobre los cambios que hagan en el codigo a medida que intentan mejorar el resultado
+Los cambio de codigos se dieron al cambio de ideas que tuve de afrotnar los problema que se presentaban por ejemplo
+trabajar con diccionario al inicio era util pero luego era mejor trabajar con listas donde se incluia la prenda que
+era compatible entre si, o cuando se elimian los repetidos al obtener la lista de prendas compatibles. 
+->Comentarios finales
+Personlamente pienso que la implemetancion del problema en el paradigma orientado a objetos hubiera simplificado el problema
+debido a que simplemente se hubieran creado instancia de la clase "Prenda" con atributos por ejemplo: valor, prendaCompatibles,tiempoLavado
+La verdad me gusto porque no estaban tan afilado con python gracias al tp pude recordar muchas cosas. 
