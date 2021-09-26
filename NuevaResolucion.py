@@ -142,6 +142,7 @@ def escribirArchivo(DicLavado):
 				archivo.write(str(prenda) + " " + str(lavado))
 	archivo.close()
 
+
 def main():
 	dicIncompatible,dicTiempos = leerArchivos()
 	lavado = asignarLavados(dicTiempos,dicIncompatible);
