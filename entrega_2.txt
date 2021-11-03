@@ -1,0 +1,20 @@
+En primer lugar probe con la resolucion TP1 solo corrigiendo lo de las prendas compatibles en ambos sentidos obtuviendo una
+ solucion con 145 prendas
+
+En segundo lugar  se me ocurrio obtener la mayor cantidad de prendas en un solo lavado asi que tome el diccionario de prendas 
+compatibles y seleccione la prenda con la lista con la mayor longitud y lo agrege a la lista de prendas usadas y actualizaba 
+el diccionario de prendas compatibles, eliminaba en todas las listas las prendas que ya estan usadas y nuevamente obtenia la 
+lista mas grande, al resolverlo de esta manera pude obtener un resultado de 195 lavados.Lo cual es un poco mas de la mitad de 
+prendas.
+
+En tercer lugar se me ocurri resolverlo usando el metodo de  particionamiento (grupos que se particionan) pensando el 
+ejemplo de la teorica que en cada Ciudad i representa la lista de prenda compatible i ('y_i') a tomar, Anticipandonos de no 
+poder encontrar una solucion decidi usar "packing" directamente, pues por definicion si existe solucion  obtendriamos que la 
+solucion es igual al problema de particionamiento, en caso contrario algunas de las variables ( v_i ) (se lavo la prenda i) 
+que creamos valdran cero. Luego de aplicar "packing" obtuve que si existe solucion pues la funcion objetivo me dio 385 (la 
+cantida de prendas total) y la listas de prendas compatibles a visitar me dio 104 y 136, 
+lo cual tiene sentido porque 104 es compatible con casi todas las prendas (menos la 136),
+no se muy bien como continuar a partir de aqui.
+
+
+
