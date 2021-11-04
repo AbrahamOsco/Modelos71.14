@@ -16,5 +16,4 @@ cantida de prendas total) y la listas de prendas compatibles a visitar me dio 10
 lo cual tiene sentido porque 104 es compatible con casi todas las prendas (menos la 136),
 no se muy bien como continuar a partir de aqui.
 
-
-
+Luego de los intentos, intente volver a empezar a pensar en problema,use POO(Que me facilito la resolucion) y ademas en lugar de estar buscando la lista con la mayor cantida de compatibles me propuse a resolver el problema sin usar el complemento ,( es decir en lugar de hacerlo con compatibles lo hare con incompatibles).Entonces buscamos las  lista de cantidad de  incompatibles de mayor cantidad a menor ademas  lo pense algo parecido a scheduling donde los lavados son como maquina y nostros ponemos las prendas (tomando las prendas obtenidas de la lista ordenada por cantidad de incompatibilidades ademas de darle un pequeño ordenamiento para que las prendas con mas cantidad de incompatibles y con mayor tiempo de lavado vayan primero) en las maquinas (lavados) disponibles y si luego de intentar colocar la prenda a los lavados existentes no tiene exito  se crearia un nuevo lavado que contenga esa prenda que no pudo introducirse antes.Con este razonamiento obtuve 34 lavados.  
