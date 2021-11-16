@@ -6,7 +6,6 @@ class Prenda:
 		self.nro = nroPrenda
 		self.tiempoLavado = 0
 		self.prendasIncomp = []
-		self.EstaEnUnlavado = False
 
 	def definirTiempo(self,unTiempo):
 		self.tiempoLavado=unTiempo
@@ -150,5 +149,5 @@ def main():
 	listaCantiIncomp =  listaPrendasConMasIncomp(listaIncomp)
 	listaLavados = asignarLavados(listaIncomp,listaCantiIncomp)
 	escribirArchivo(listaLavados)
-	print("hola")
+
 main()
