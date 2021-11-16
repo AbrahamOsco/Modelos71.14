@@ -18,8 +18,6 @@ class Prenda:
 	def imprimirPrenda(self):
 		print(self.nro,end=':')
 		print(len(self.prendasIncomp),end='\n')
-		#print((self.prendasIncomp),end='')
-		#print(self.tiempoLavado,end='\t \n')
 
 	def getPrendasIncomp(self):
 		return self.prendasIncomp
@@ -152,9 +150,5 @@ def main():
 	listaCantiIncomp =  listaPrendasConMasIncomp(listaIncomp)
 	listaLavados = asignarLavados(listaIncomp,listaCantiIncomp)
 	escribirArchivo(listaLavados)
-
-	#print(len(listaLavados))
-	#for lavado in listaLavados:
-	#	lavado.imprimirLavado()
 
 main()
