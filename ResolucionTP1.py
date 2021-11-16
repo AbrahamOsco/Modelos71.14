@@ -150,5 +150,5 @@ def main():
 	listaCantiIncomp =  listaPrendasConMasIncomp(listaIncomp)
 	listaLavados = asignarLavados(listaIncomp,listaCantiIncomp)
 	escribirArchivo(listaLavados)
-
+	print("hola")
 main()
