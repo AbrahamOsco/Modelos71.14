@@ -1,11 +1,13 @@
 #Lee los archivos y devuelve dos diccionarios uno para las prendas incompatibles
 #Y otro diccionario para el tiempo que demora cada prenda 
+import time
 class Prenda:
 
 	def __init__(self,nroPrenda):
 		self.nro = nroPrenda
 		self.tiempoLavado = 0
 		self.prendasIncomp = []
+		self.estaLavada = False
 
 	def definirTiempo(self,unTiempo):
 		self.tiempoLavado=unTiempo
@@ -13,29 +15,24 @@ class Prenda:
 	def addIncompatibilidad(self,prendaIncompatible):
 		if prendaIncompatible not in self.prendasIncomp:
 			self.prendasIncomp.append(prendaIncompatible)
-	
-	def imprimirPrenda(self):
-		print(self.nro,end=':')
-		print(len(self.prendasIncomp),end='\n')
-
+		
 	def getPrendasIncomp(self):
 		return self.prendasIncomp
 
-	def estaEnListaIncomp(self,prenda):
-		return (prenda in self.prendasIncomp)
-	
 	def getNro(self):
 		return self.nro
-	
-	#Se usa para definir como se compara en el sorted
-	def __gt__(self,prenda):
-		return ( len(self.prendasIncomp) > (len(prenda.prendasIncomp) ))
 
 	def cantidadIncom(self):
 		return len(self.prendasIncomp)
 
 	def getTiempo(self):
 		return self.tiempoLavado
+	
+	def lavarPrenda(self):
+		self.estaLavada = True
+
+	def prendaLavada(self):
+		return self.estaLavada
 
 class Lavado:
 
@@ -53,19 +50,20 @@ class Lavado:
 				return False
 		return True
 
-	def imprimirLavado(self):
-		print(self.nroLavado,end=':')
-		for prenda in self.prendas:
-			prenda.imprimirPrenda()
-
 	def getListaPrendas(self):
 		return self.prendas
 
 	def getNroLavado(self):
 		return self.nroLavado
 
+	def estaNroPrendaEnLavado(self,nro):
+		for prenda in self.prendas:
+			if(prenda.getNro() == nro):
+				return True
+		return False
+
 def leerArchivos():
-	archivo = open("ConsignaTP1.py","r")
+	archivo = open("ConsignaTP1.txt","r")
 	linea = archivo.readline()
 	listaIncomp = []	
 	while(linea!=""):
@@ -85,69 +83,90 @@ def agregarIncomp(listaIncomp,valor1,valor2,):
 	listaIncomp[valor1-1].addIncompatibilidad(valor2)
 	listaIncomp[valor2-1].addIncompatibilidad(valor1)
 
-
 def inicializarLista(linea,listaIncomp):
 	cantidadPrendas = int (linea[2]) #Esto si . 
 	for i in range(1,cantidadPrendas+1):
 		listaIncomp.append( Prenda(i))
 
-
+#Obtenemos una lista con las prendas con mayor cantidad de incompatibilidades
+#Es decir seria una lista con las prendas (vertices) de mayor grado.
+#Grado de un vertice definición: Es la cantidad de aristas que inciden en el . 
+#Paso 1: Ordenar los vértices en orden decreciente de grados.
 def listaPrendasConMasIncomp(listaIncomp):
-	listCantiIncomp = (sorted(listaIncomp,reverse=True))
-	i = 0
-	for prenda in listCantiIncomp:
-		if(i<len(listCantiIncomp)-1):
-			if(listCantiIncomp[i].cantidadIncom() == listCantiIncomp[i+1].cantidadIncom() ):
-				if(listCantiIncomp[i].getTiempo() < listCantiIncomp[i+1].getTiempo() ):
-					backup = listCantiIncomp[i]
-					listCantiIncomp[i]=listCantiIncomp[i+1]
-					listCantiIncomp[i+1]=backup
-		i += 1
-	return listCantiIncomp
+	listaOrden = sorted(listaIncomp,key=lambda p:p.cantidadIncom() ,reverse=True)
+	return listaOrden
 
+#Dado una prendaEspecifica (vertice) vamos a obtener la cantidad de colores(lavados) usados
+#en los vecinos de esta prendaEspecifica (vertice).Esto es la definicion de grado de color de un vertice.
+def obtenerGradoColor(prendaEsp,lavados):
+	nroLavadosVecinos = []
+	for prenda in prendaEsp.getPrendasIncomp():
+		for lavado in lavados:
+			if(lavado.getNroLavado() not in nroLavadosVecinos and lavado.estaNroPrendaEnLavado(prenda) ):
+				nroLavadosVecinos.append(lavado.getNroLavado())
+				
+	return len(nroLavadosVecinos)
 
-def asignarLavados(listaIncomp,listCantiIncomp):
+def obtenerGradoColorMax(listaPrendas,lavados):
+	gradoColorMax = 0
+	contador = 1
+	prendasSiguientes = []  #el grado de color se puede repetir, tomaremos la prenda que mas tarda en lavar.
+	for prenda in listaPrendas:
+		gradoActual = obtenerGradoColor(prenda,lavados)
+		if(gradoActual>gradoColorMax):
+			gradoColorMax = gradoActual
+			prendasSiguientes.clear() #Limpio toda la lista porque encontre un grado de color mucho mas grande.
+			prendasSiguientes.append(prenda)
+		elif(gradoActual == gradoColorMax):   #Paso 3.1: Si hay varios, elegimos el de grado máximo, asi dice el algoritmo nosotros solo lo 
+			prendasSiguientes.append(prenda)  #agruparemos en una lista para luego ordenarlos por  el que tenga mayor tiempo .		
+
+	prendasOrd = sorted(prendasSiguientes,key=lambda p:p.getTiempo(), reverse=True )
+	return prendasOrd[0]
+
+def asignarLavados(listCantiIncomp):
 	nroLavado = 1
-	prendasLavadas = []
-	listaLavados = []
-	seLavoLaPrenda = False
+	lavados = []
+	#Paso 2: Coloreamos un vértice de grado máximo con el color(lavado) 1.
+	prendaIni = listCantiIncomp[0]
+	lavados.append(Lavado(nroLavado))
+	lavados[0].agregarPrendaAlLavado(prendaIni)
+	prendaIni.lavarPrenda()
+	nroLavado +=1
+	listCantiIncomp.pop(0)
 
-	while(len(prendasLavadas)<len(listaIncomp)):
-		if( len(prendasLavadas)==0 ):#Realizamos el primer lavado para que tenga sentido recorrer la lista de lavados
-			listaLavados.append(Lavado(nroLavado)) 
-			prenda = listCantiIncomp[0]
-			listaLavados[0].agregarPrendaAlLavado(prenda)
-			prendasLavadas.append(prenda)
-			nroLavado += 1
-		else:
-			for prenda in listCantiIncomp:
-				for lavado in listaLavados:
-					if(lavado.sePuedeAgregarPrenda(prenda) and prenda not in prendasLavadas):
-						lavado.agregarPrendaAlLavado(prenda)
-						prendasLavadas.append(prenda)
-						seLavoLaPrenda = True
-				if(not seLavoLaPrenda and prenda not in prendasLavadas ):
-					listaLavados.append( Lavado(nroLavado))
-					listaLavados[nroLavado-1].agregarPrendaAlLavado(prenda)
-					prendasLavadas.append(prenda)
-					nroLavado += 1
-				seLavoLaPrenda = False
-	return listaLavados
+	while( len(listCantiIncomp) > 0 ):
+		#Paso 3.0: Seleccionamos un vértice, aún sin colorear, con grado de color máximo. 	
+		prendaSgt = obtenerGradoColorMax(listCantiIncomp,lavados)
+		for lavado in lavados: #Paso 4: Colorear(asignar Lavado) el vértice (prenda) seleccionado en el paso 3 con el menor color(lavado) posible.
+			if(lavado.sePuedeAgregarPrenda(prendaSgt) and  not prendaSgt.prendaLavada() ):
+				lavado.agregarPrendaAlLavado(prendaSgt)
+				prendaSgt.lavarPrenda()
+				listCantiIncomp.remove(prendaSgt)
+		if( not prendaSgt.prendaLavada() ):
+			lavadoActual = Lavado(nroLavado)
+			lavadoActual.agregarPrendaAlLavado(prendaSgt)
+			lavados.append(lavadoActual)
+			prendaSgt.lavarPrenda()
+			nroLavado +=1
+			listCantiIncomp.remove(prendaSgt)
+		print(len(listCantiIncomp))
+		#Paso 5: Si todos los vértices se han coloreado, FIN. En caso contrario, volver al paso 3.	
+	return lavados
 
 def escribirArchivo(listaLavados):
 	archivo = open("respuestas2.txt","w")
 	for lavado in listaLavados:
 		for prenda in lavado.getListaPrendas():
-				if(lavado.getNroLavado() < len(listaLavados) ):
-					archivo.write(str(prenda.getNro()) + " " + str(lavado.getNroLavado() )+"\n")
-				else:
-					archivo.write(str(prenda.getNro()) + " " + str(lavado.getNroLavado() ))
+			archivo.write(str(prenda.getNro()) + " " + str(lavado.getNroLavado() )+"\n")
 	archivo.close()
 
 def main():
+	inicio = time.time()
 	listaIncomp = leerArchivos()
 	listaCantiIncomp =  listaPrendasConMasIncomp(listaIncomp)
-	listaLavados = asignarLavados(listaIncomp,listaCantiIncomp)
+	listaLavados = asignarLavados(listaCantiIncomp)
 	escribirArchivo(listaLavados)
-
+	fin = time.time()
+	print(fin-inicio)
 main()
+

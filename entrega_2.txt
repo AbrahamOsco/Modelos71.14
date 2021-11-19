@@ -16,4 +16,17 @@ cantida de prendas total) y la listas de prendas compatibles a visitar me dio 10
 lo cual tiene sentido porque 104 es compatible con casi todas las prendas (menos la 136),
 no se muy bien como continuar a partir de aqui.
 
-Luego de los intentos, intente volver a empezar a pensar en problema,use POO(Que me facilito la resolucion) y ademas en lugar de estar buscando la lista con la mayor cantida de compatibles me propuse a resolver el problema sin usar el complemento ,( es decir en lugar de hacerlo con compatibles lo hare con incompatibles).Entonces buscamos las  lista de cantidad de  incompatibles de mayor cantidad a menor ademas  lo pense algo parecido a scheduling donde los lavados son como maquina y nostros ponemos las prendas (tomando las prendas obtenidas de la lista ordenada por cantidad de incompatibilidades ademas de darle un pequeño ordenamiento para que las prendas con mas cantidad de incompatibles y con mayor tiempo de lavado vayan primero) en las maquinas (lavados) disponibles y si luego de intentar colocar la prenda a los lavados existentes no tiene exito  se crearia un nuevo lavado que contenga esa prenda que no pudo introducirse antes.Con este razonamiento obtuve 34 lavados.  
+Luego de los intentos, intente volver a empezar a pensar en problema,use POO(Que me facilito la resolucion) y ademas en lugar de estar buscando la lista con la mayor cantida de compatibles me propuse a resolver el problema sin usar el complemento ,( es decir en lugar de hacerlo con compatibles lo hare con incompatibles).
+Entonces buscamos las  lista de cantidad de  incompatibles de mayor cantidad a menor ademas  lo pense algo parecido a scheduling donde los lavados son como maquina y nostros ponemos las prendas 
+(tomando las prendas obtenidas de la lista ordenada por cantidad de incompatibilidades ademas de darle un pequeño ordenamiento para que las prendas con mas cantidad de incompatibles y con mayor tiempo de lavado vayan primero) 
+en las maquinas (lavados) disponibles y si luego de intentar colocar la prenda a los lavados existentes no tiene exito  se crearia un nuevo lavado que contenga esa prenda que no pudo introducirse antes.Con este razonamiento obtuve 34 lavados.  
+
+Luego analizando los videos de la teorica  recorde que hablaron sobre el coloreo de grafos me decidi a implementarlo, buscando en internet encontre el algoritmo de Algoritmo de coloración de Brelaz 
+consiste en basicamente en 5 pasos, ordenar las prendas(vertices) en grado (descendente), (fue lo que hice anteriormente)  tomar el primero, y luego asignarle un color, 
+pero ahora agregado la definicion de grado de color del vertice , esto fue lo que mas me costo implementar de pronto primero tuve que relacionar conceptos donde se concluye que #colores = #lavados , #prendas = #vertice, 
+luego de dibujar muchos grafos y leer la definicion de grado de color muchos veces mas , se pudo implementar el metodo obtenerGradoColor, luego continuando con el algoritmo 
+se calcula el grado de color a todas las prendas de la lista y nos quedamos con el mayor grado claramente como se puede repetir decidi meterlo a una lista
+como no he usado el tiempo hasta ahora y el algoritmo nos pide ordenarlo por grado (caso que se repitan varios grado de color) decidi ordenar la lista por tiempo.
+devolviendo la primera posicion de la lista.Todo esto en un ciclo donde voy eliminando de la lista mas grande de prendas las prendas que se uso.
+Finalmente analizando la complejidad computacional aumento considerablemente, el tiempo que tarda en sublime es en el orden de 52.511s , anteriormente el tiempo de ejecucion era a lo sumo 1s.
+(nota: en visual studio code la duracion del tiempo de ejecucion es  454,445s = 7,5 minutos)
