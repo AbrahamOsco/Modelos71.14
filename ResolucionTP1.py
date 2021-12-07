@@ -63,7 +63,7 @@ class Lavado:
 		return False
 
 def leerArchivos():
-	archivo = open("ConsignaTP1.txt","r")
+	archivo = open("tercer_problema.txt","r")
 	linea = archivo.readline()
 	listaIncomp = []	
 	while(linea!=""):
@@ -154,7 +154,7 @@ def asignarLavados(listCantiIncomp):
 	return lavados
 
 def escribirArchivo(listaLavados):
-	archivo = open("respuestas2.txt","w")
+	archivo = open("respuestasTP3Inicial.txt","w")
 	for lavado in listaLavados:
 		for prenda in lavado.getListaPrendas():
 			archivo.write(str(prenda.getNro()) + " " + str(lavado.getNroLavado() )+"\n")
