@@ -487,4 +487,5 @@ void buscarSolucionInicial(int* coloreoValido) {
 	coloreoValido[46] = 6;
 	coloreoValido[7] = 6;
 	coloreoValido[31] = 7;
+
 }

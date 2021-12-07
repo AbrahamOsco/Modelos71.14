@@ -1,12 +1,3 @@
-﻿  graph.c
-  graphics.c
-  node.c
-  nodesList.c
-  pnode.c
-  pnodesList.c
-  leer_dimac.c
-  lhk_branch_and_cut.c
+﻿  lhk_branch_and_cut.c
 C:\Users\Intel\Dropbox\Mi PC (DESKTOP-I6ROIS0)\Desktop\modelosyOptimizacion\modelostp1\tercerProblema\lhk_branch_and_cut.c(8,10): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
-  main.c
-  Generando código...
   modelos_uno.vcxproj -> C:\Users\Intel\Dropbox\Mi PC (DESKTOP-I6ROIS0)\Desktop\modelosyOptimizacion\modelostp1\tercerProblema\modelos_uno.exe
