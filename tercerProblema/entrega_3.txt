@@ -1,9 +1,26 @@
-En primer lugar intentamos resolver el problema del TP3 con la heuristica propuesta en el TP2 obteniendo un resultado de 107 unidades de tiempo,se obtuvo en 7 lavados y demoro un tiempo de 0,233s en SublimeText y 2,171s en Visual studio code.
-Luego corrimos el codigo dado por la catedra este tarda demasiado se queda estancado en un gap y luego continua hasta que se corte por el tiempo limite, despues de ver que nunca termina, mejoramos el procedimiento "buscarSolucionInicial",harcodeando el resultado de aplicar la euristica del tp2 al "tercer_problema.txt", para partir de aca buscar una mejor solucion, si corremos el codigo seguimos teniendo el problema de que no termina.
+En primer lugar intentamos resolver el problema del TP3 con la heuristica propuesta en el TP2 obteniendo un resultado de 107 unidades de tiempo,
+se obtuvo en 7 lavados y demoro un tiempo de 0,233s en SublimeText y 2,171s en Visual studio code.
+Como primer paso corrimos el codigo dado por la catedra este tarda demasiado se queda estancado en un gap y
+luego continua hasta que se corte por el tiempo limite,despues de ver que nunca termina.
 
-Entonces ahora modificamos la variable maxColor en lugar que sea Nr_vert (95) sera la maxima cantidad de lavados obtenidos con la heuristica del TP2 este valor es 7, si corrremos el codigo vemos que ahora el gap disminuye a un ritmo considerable en un inicio, pero como en la situaciones anteriores no termina de obtener el optimo, (la funcion objetivo sube y baja).
+Como segundo paso, mejoramos el procedimiento "buscarSolucionInicial",harcodeando el resultado de aplicar la euristica del tp2
+al "tercer_problema.txt", para partir de aca buscar una mejor solucion, si corremos el codigo seguimos teniendo el problema de que no termina
+cortando cuando llega al limite de los 1800s.
 
-Ahora lo que provoca que el modelo nunca termine es que esta buscando todas las posibles soluciones (cambiando el orden de los colores), lo cual el  modelo itera en todas las posibles soluciones y vaya probando cada solucion, generando que demore mucho  tiempo(hasta llegar al tiempo limite 1800s, se corta el programa), entonces ahora agregamos las restriccion propuesta por la catedra, (Eliminacion de simetria), Xk>= X(k+1),
+Como tercer paso entonces ahora modificamos la variable maxColor en lugar que sea Nr_vert (95) sera la maxima cantidad de lavados
+obtenidos con la heuristica del TP2 este valor es 7, si corremos el codigo vemos que ahora el gap
+disminuye a un ritmo considerable en un inicio pero como en la situaciones anteriores 
+no termina de obtener el optimo, (la funcion objetivo sube y baja).
+
+Como cuarto paso analizando lo que provoca que el modelo nunca termine es que esta buscando 
+todas las posibles soluciones (cambiando el orden de los colores), lo cual el  modelo itera en 
+todas las posibles soluciones y vaya probando cada solucion, generando que demore mucho  tiempo(hasta llegar al tiempo limite 1800s, se corta el programa),
+entonces ahora agregamos las restriccion propuesta por la catedra, (Eliminacion de simetria), Xk>= X(k+1),
 entonces si hay un color que tiene mas vertices que otro, ese color siempre sera el color 1 y el que le sigue el 2 y el que le sigue el 3 y asi hasta el color 7.
-Al agregar esta restriccion el programa termina a las 41s-45s obteniendo finalmente el optimo(91) cuyo valor es menor a lo que propusimos como soluciona inicial usando la heuristica del TP2, a cambiar de un  mayor tiempo de ejecucion.
-Esta gran herramienta para poder determinar el optimo puede ser aplicado en muchas aereas,asignacion de registros al compilar un programa ,asignacion de tareas  la asignacion de frecuencias en una radio, resolver un sudoku (9-coloreo),y muchos mas.  
+
+Al agregar esta restriccion el programa termina a las 41s-45s obteniendo finalmente el optimo(91) 
+cuyo valor es menor a lo que propusimos como soluciona inicial usando la heuristica del TP2, a cambiar de un  mayor tiempo de ejecucion.
+
+Como comentarios finales: esta gran herramienta para poder determinar el optimo puede ser aplicado en muchas aereas,
+asignacion de registros al compilar un programa ,asignacion de tareas  la asignacion de frecuencias en una radio, 
+resolver un sudoku (9-coloreo),y muchos mas.  
